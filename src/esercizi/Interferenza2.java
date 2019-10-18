@@ -7,7 +7,6 @@ public class Interferenza2 {
 		public void run() {
 			while (true) {
 				try {
-//					Smiley.class.
 					synchronized (Smiley.class) {
 						printDuePunti();
 						printTrattino();

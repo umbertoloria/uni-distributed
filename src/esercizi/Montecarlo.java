@@ -35,8 +35,8 @@ public class Montecarlo {
 	}
 
 	public static void main(String[] args) {
-		long times = 100_000_000_000L;
-		PiGreco[] threads = new PiGreco[24];
+		long times = 100_000_000L;
+		PiGreco[] threads = new PiGreco[4];
 		long times4thread = times / threads.length;
 		for (int i = 0; i < threads.length - 1; i++) {
 			threads[i] = new PiGreco(times4thread);
@@ -55,12 +55,10 @@ public class Montecarlo {
 		}
 		long fine = System.currentTimeMillis();
 		long c = 0;
-		long n = 0;
 		for (PiGreco thread : threads) {
 			c += thread.getC();
-			n += thread.getN();
 		}
-		System.out.printf("risultato: %15.14f\n", 4.0f * c / n);
+		System.out.printf("risultato: %15.14f\n", 4.0f * c / times);
 		System.out.println("durata:    " + (fine - inizio) / 1000f + " s");
 	}
 

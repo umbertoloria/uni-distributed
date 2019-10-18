@@ -2,7 +2,7 @@ package esercizi;
 
 public class Interferenza1 {
 
-	private static class Counter {
+	/*private static class Counter {
 
 		private int i = 0;
 
@@ -14,33 +14,42 @@ public class Interferenza1 {
 			return i + "";
 		}
 
-	}
+	}*/
 
 	private static class Incrementatore extends Thread {
 
-		private Counter c;
+		// private Counter c;
 		private int number;
 
-		public Incrementatore(Counter c, int number) {
-			this.c = c;
+		// public Incrementatore(Counter c, int number) {
+		public Incrementatore(int number) {
+			// this.c = c;
 			this.number = number;
 		}
 
 		public void run() {
 			for (int i = 0; i < number; i++) {
-				c.increment();
+				// c.increment();
+				synchronized (lock) {
+					contatore++;
+				}
 			}
 		}
 	}
 
+	private static final int THREADS_COUNT = 3;
+	private static final int INCREMENTI = 40_000;
+	private static int contatore = 0;
+	private static final Object lock = new Object();
+
 	public static void main(String[] args) {
-		Counter c = new Counter();
-		Thread[] threads = new Thread[1];
-		int chunk4thread = 40_000 / threads.length;
+//		Counter c = new Counter();
+		Thread[] threads = new Thread[THREADS_COUNT];
+		int chunk4thread = INCREMENTI / threads.length;
 		for (int i = 0; i < threads.length - 1; i++) {
-			threads[i] = new Incrementatore(c, chunk4thread);
+			threads[i] = new Incrementatore(chunk4thread);
 		}
-		threads[threads.length - 1] = new Incrementatore(c, 40_000 - (threads.length - 1) * chunk4thread);
+		threads[threads.length - 1] = new Incrementatore(INCREMENTI - (threads.length - 1) * chunk4thread);
 		for (Thread thread : threads) {
 			thread.start();
 		}
@@ -51,7 +60,7 @@ public class Interferenza1 {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(c);
+		System.out.println(contatore);
 	}
 
 }
