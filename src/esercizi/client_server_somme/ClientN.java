@@ -1,4 +1,4 @@
-package esercizi.client_server;
+package esercizi.client_server_somme;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

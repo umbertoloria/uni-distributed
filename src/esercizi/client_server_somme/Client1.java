@@ -1,4 +1,4 @@
-package esercizi.client_server;
+package esercizi.client_server_somme;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,10 +25,10 @@ public class Client1 {
 			oos.writeObject(x);
 			oos.writeObject(y);
 			oos.flush();
-			log.info("Parameters sent");
+			log.info("Parameters (" + x + ", " + y + ") sent");
 
 			int result = Integer.parseInt(ois.readObject().toString());
-			System.out.println("result: " + result);
+			System.out.println(x + " + " + y + " = " + result);
 			log.info("Result taken");
 
 			oos.close();

@@ -1,4 +1,4 @@
-package esercizi.client_server;
+package esercizi.client_server_contatore;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -10,19 +10,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
-// Il server riceve due numeri ed invia la loro somma. Ripete per ogni coppia di numeri. Questo, per più client.
+// Il server riceve una connessione, apre un thread, riceve un numero, lo somma al contatore, ed invia questo valore.
+// Ripete per quanti numeri riceve.
 public class ServerNN extends Thread {
 
 	private Socket s;
 
 	public ServerNN(Socket s) {
 		this.s = s;
-		setName("Server thread for port " + s.getLocalPort());
 	}
 
 	public void run() {
-		Logger log = Logger.getLogger("Server thread " + Thread.currentThread().getName() + " logs");
 		try {
+			Logger log = Logger.getLogger("Server thread " + Thread.currentThread().getName() + " logs");
+			log.info("Socket accepted");
 
 			ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
@@ -33,13 +34,15 @@ public class ServerNN extends Thread {
 				try {
 
 					int x = Integer.parseInt(ois.readObject().toString());
-					int y = Integer.parseInt(ois.readObject().toString());
+					log.info("Received a number (" + x + ")");
 
-					int result = x + y;
-					oos.writeObject(result);
+					synchronized (lock) {
+						contatore += x;
+					}
+					oos.writeObject(contatore);
 					oos.flush();
-
-					System.out.println("Client served " + x + " + " + y + " = " + result);
+					System.out.println("Contatore: " + contatore);
+					log.info("Result (" + contatore + ") sent");
 
 				} catch (EOFException | ClassNotFoundException e) {
 					break;
@@ -57,11 +60,14 @@ public class ServerNN extends Thread {
 		}
 	}
 
+	private static final Object lock = new Object();
+	private static int contatore = 0;
+
 	public static void main(String[] args) {
 		Logger log = Logger.getLogger("Server logs");
 		try {
 
-			ServerSocket ss = new ServerSocket(9592);
+			ServerSocket ss = new ServerSocket(9137);
 			log.info("ServerSocket opened");
 
 			List<Thread> threads = new LinkedList<>();
