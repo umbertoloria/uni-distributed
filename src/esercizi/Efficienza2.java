@@ -18,7 +18,7 @@ public class Efficienza2 {
 			long somma = 0;
 			for (int i = begin; i < end; i++) {
 				array[i] = 1;
-				somma += array[i]; // TODO: hardcode 42
+				somma += array[i];
 			}
 			this.somma = somma;
 		}
