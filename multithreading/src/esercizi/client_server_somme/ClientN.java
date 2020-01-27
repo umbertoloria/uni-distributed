@@ -6,7 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-// Il client invia una coppia di numeri, riceve la loro somma mandandola in output, e ripete questo per ogni coppia che ha.
+// Il client invia una coppia di numeri, riceve la loro somma mandandola in output.
+// Ripete questo per ogni coppia che ha.
 public class ClientN {
 
 	public static void main(String[] args) {
