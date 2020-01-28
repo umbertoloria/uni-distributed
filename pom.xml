@@ -12,6 +12,7 @@
 	<modules>
 		<module>multithreading</module>
 		<module>capitolo2</module>
+		<module>capitolo4-jpa</module>
 	</modules>
 
 	<build>
